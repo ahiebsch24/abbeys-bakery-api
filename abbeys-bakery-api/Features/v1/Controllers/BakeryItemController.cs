@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MediatR;
 
-namespace abbeys_bakery_api.Controllers
+namespace abbeys_bakery_api.Features.v1.Controllers
 {
     public class BakeryItemController : Controller
     {
