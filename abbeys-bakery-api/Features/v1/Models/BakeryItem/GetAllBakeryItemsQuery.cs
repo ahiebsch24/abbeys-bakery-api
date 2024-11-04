@@ -1,4 +1,7 @@
-﻿using MediatR;
+﻿using abbeys_bakery_api.Entities;
+using AutoMapper;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace abbeys_bakery_api.Features.v1.Models.BakeryItem
 {
@@ -16,23 +19,29 @@ namespace abbeys_bakery_api.Features.v1.Models.BakeryItem
 
         public class BakeryItem
         {
-            public string BakeryItemName { get; set; }
+            public string ItemTitle { get; set; }
         }
 
         public class Handler : IRequestHandler<GetAllBakeryItemsRequest, GetAllBakeryItemsResponse>
         {
-            public Handler()
+            private AbbeysBakeryContext _abbeysBakeryContext;
+            private readonly IMapper _mapper;
+            public Handler(AbbeysBakeryContext abbeysBakeryContext, IMapper mapper)
             {
-
+                _abbeysBakeryContext = abbeysBakeryContext;
+                _mapper = mapper;
             }
 
             public async Task<GetAllBakeryItemsResponse> Handle(GetAllBakeryItemsRequest request, CancellationToken cancellationToken)
             {
                 // TODO: Implement GetAllBakeryItems Handler method
                 GetAllBakeryItemsResponse response = new GetAllBakeryItemsResponse();
-                BakeryItem item = new BakeryItem();
-                item.BakeryItemName = "Apple Pie";
-                response.BakeryItems.Add(item);
+                var bakeryItems = await this._abbeysBakeryContext.MenuItems.ToListAsync(cancellationToken);
+                foreach (var item in bakeryItems)
+                {
+                    BakeryItem bakeryItem = _mapper.Map<BakeryItem>(item);
+                    response.BakeryItems.Add(bakeryItem);
+                }
                 return response;
             }
         }

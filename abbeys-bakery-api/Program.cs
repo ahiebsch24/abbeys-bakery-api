@@ -3,6 +3,8 @@ using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.AzureKeyVault;
+using Microsoft.EntityFrameworkCore;
+using abbeys_bakery_api.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +33,8 @@ builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterServicesFromAssemblyContaining<Program>();
 });
+builder.Services.AddDbContext<AbbeysBakeryContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("AbbeysBakeryContext")));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
