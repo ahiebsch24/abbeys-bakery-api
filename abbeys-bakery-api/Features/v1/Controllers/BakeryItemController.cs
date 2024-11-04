@@ -1,15 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MediatR;
+using abbeys_bakery_api.Features.v1.Models.BakeryItem;
 
 namespace abbeys_bakery_api.Features.v1.Controllers
 {
     public class BakeryItemController : Controller
     {
+        private readonly IMediator _mediator;
+
+        public BakeryItemController(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
         [Route("getAllBakeryItems")]
         [HttpGet]
-        public ActionResult GetAllBakeryItems()
+        public async Task<ActionResult<GetAllBakeryItemsQuery.GetAllBakeryItemsResponse>> GetAllBakeryItems(GetAllBakeryItemsQuery.GetAllBakeryItemsRequest request)
         {
-            return View();
+            var model = await _mediator.Send(request);
+            return Ok(model);
         }
     }
 }
