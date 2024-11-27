@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>abbeys_bakery_api</RootNamespace>
+    <UserSecretsId>502b4528-f413-4c01-b4d3-238c5c113ba6</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
