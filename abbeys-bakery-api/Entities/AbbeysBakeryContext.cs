@@ -3,49 +3,39 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace abbeys_bakery_api.Entities
+namespace abbeys_bakery_api.Entities;
+
+public partial class AbbeysBakeryContext : DbContext
 {
-    public partial class AbbeysBakeryContext : DbContext
+    public AbbeysBakeryContext(DbContextOptions<AbbeysBakeryContext> options)
+        : base(options)
     {
-        public AbbeysBakeryContext()
-        {
-        }
-
-        public AbbeysBakeryContext(DbContextOptions<AbbeysBakeryContext> options)
-            : base(options)
-        {
-        }
-
-        public virtual DbSet<MenuItem> MenuItems { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<MenuItem>(entity =>
-            {
-                entity.HasNoKey();
-
-                entity.Property(e => e.AllergyNotes)
-                    .HasMaxLength(1000)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.ItemDescription)
-                    .HasMaxLength(1000)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.ItemTitle)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.MenuItemGuid).HasDefaultValueSql("(newid())");
-
-                entity.Property(e => e.Price).HasColumnType("decimal(18, 0)");
-            });
-
-            OnModelCreatingPartial(modelBuilder);
-        }
-
-        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
+
+    public virtual DbSet<MenuItem> MenuItems { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<MenuItem>(entity =>
+        {
+            entity.HasNoKey();
+
+            entity.Property(e => e.AllergyNotes)
+                .HasMaxLength(1000)
+                .IsUnicode(false);
+            entity.Property(e => e.ItemDescription)
+                .HasMaxLength(1000)
+                .IsUnicode(false);
+            entity.Property(e => e.ItemTitle)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.MenuItemGuid).HasDefaultValueSql("(newid())");
+            entity.Property(e => e.Price).HasColumnType("decimal(18, 0)");
+        });
+
+        OnModelCreatingPartial(modelBuilder);
+    }
+
+    partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }

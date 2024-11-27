@@ -15,7 +15,6 @@ builder.Configuration.AddUserSecrets<Program>();
 // Configure Key Vault
 var keyVaultName = "abbeysbakeryapikv";
 string keyVaultUri = $"https://{keyVaultName}.vault.azure.net/";
-<<<<<<< Updated upstream
 var Azure_Tenant_Id = builder.Configuration["Azure_Tenant_Id"];
 var Azure_Client_Id = builder.Configuration["Azure_Client_Id"];
 var Azure_Client_Secret = builder.Configuration["Azure_Client_Secret"];
@@ -23,10 +22,6 @@ builder.Configuration.AddAzureKeyVault(new Uri(keyVaultUri), new ClientSecretCre
 
 // Add CORS policy
 builder.Services.AddCors(options =>
-=======
-/*
-DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredential(new DefaultAzureCredentialOptions
->>>>>>> Stashed changes
 {
     options.AddPolicy("AllowAngularOrigins",
     builder =>
@@ -36,12 +31,7 @@ DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredential(new D
                .AllowAnyMethod();
     });
 });
-<<<<<<< Updated upstream
 
-=======
-builder.Configuration.AddAzureKeyVault(new Uri(keyVaultUri), defaultAzureCredential);
-*/
->>>>>>> Stashed changes
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddMediatR(cfg =>
 {
@@ -49,7 +39,7 @@ builder.Services.AddMediatR(cfg =>
 });
 var connectionString = builder.Configuration.GetConnectionString("AbbeysBakeryContext"); 
 builder.Services.AddDbContext<AbbeysBakeryContext>(options =>
-    options.UseSqlServer("Data Source=ADINANDABBEY\\MSSQLSERVER01;Initial Catalog=AbbeysBakery;Integrated Security=True"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("AbbeysBakeryContext")));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
