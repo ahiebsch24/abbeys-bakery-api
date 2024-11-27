@@ -1,6 +1,7 @@
 ﻿using abbeys_bakery_api.Entities;
 using AutoMapper;
 using MediatR;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace abbeys_bakery_api.Features.v1.Models.BakeryItem
@@ -36,7 +37,8 @@ namespace abbeys_bakery_api.Features.v1.Models.BakeryItem
             {
                 // TODO: Implement GetAllBakeryItems Handler method
                 GetAllBakeryItemsResponse response = new GetAllBakeryItemsResponse();
-                var bakeryItems = await this._abbeysBakeryContext.MenuItems.ToListAsync(cancellationToken);
+                var menuItems = this._abbeysBakeryContext.MenuItems;
+                var bakeryItems = menuItems.ToList();
                 foreach (var item in bakeryItems)
                 {
                     BakeryItem bakeryItem = _mapper.Map<BakeryItem>(item);
