@@ -9,16 +9,25 @@ using abbeys_bakery_api.Entities;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers();
-builder.Configuration.AddUserSecrets<Program>();
-
-// Configure Key Vault
+/*
 var keyVaultName = "abbeysbakeryapikv";
 string keyVaultUri = $"https://{keyVaultName}.vault.azure.net/";
-var Azure_Tenant_Id = builder.Configuration["Azure_Tenant_Id"];
-var Azure_Client_Id = builder.Configuration["Azure_Client_Id"];
-var Azure_Client_Secret = builder.Configuration["Azure_Client_Secret"];
-builder.Configuration.AddAzureKeyVault(new Uri(keyVaultUri), new ClientSecretCredential(Azure_Tenant_Id, Azure_Client_Id, Azure_Client_Secret));
+DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredential(new DefaultAzureCredentialOptions
+{
+    // These settings are used to speed up the loading of KeyVault. This way it can ignore unused credential sources.
+    ExcludeAzureCliCredential = true,
+    ExcludeAzurePowerShellCredential = true,
+    ExcludeEnvironmentCredential = true,
+    ExcludeInteractiveBrowserCredential = true,
+    ExcludeManagedIdentityCredential = false,
+    ExcludeSharedTokenCacheCredential = true,
+    ExcludeVisualStudioCodeCredential = false,
+    ExcludeVisualStudioCredential = false,
+});
+//builder.Configuration.AddAzureKeyVault(new Uri(keyVaultUri), defaultAzureCredential);
+*/
+builder.Services.AddControllers();
+builder.Configuration.AddUserSecrets<Program>();
 
 // Add CORS policy
 builder.Services.AddCors(options =>
@@ -37,9 +46,11 @@ builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterServicesFromAssemblyContaining<Program>();
 });
-var connectionString = builder.Configuration.GetConnectionString("AbbeysBakeryContext"); 
+
+var connectionString = builder.Configuration.GetConnectionString("AbbeysBakeryContext");
 builder.Services.AddDbContext<AbbeysBakeryContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("AbbeysBakeryContext")));
+    options.UseSqlServer(connectionString));
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
