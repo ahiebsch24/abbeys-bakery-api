@@ -19,7 +19,10 @@ namespace abbeys_bakery_api.Features.v1.Models.BakeryItem
 
         public class BakeryItem
         {
-            public string ItemTitle { get; set; }
+            public string Title { get; set; }
+            public string Description { get; set; }
+            public decimal Price { get; set; }
+            public Guid MenuItemGuid { get; set; }
         }
 
         public class Handler : IRequestHandler<GetAllBakeryItemsRequest, GetAllBakeryItemsResponse>
@@ -39,7 +42,11 @@ namespace abbeys_bakery_api.Features.v1.Models.BakeryItem
                 var bakeryItems = await this._abbeysBakeryContext.MenuItems.ToListAsync(cancellationToken);
                 foreach (var item in bakeryItems)
                 {
-                    BakeryItem bakeryItem = _mapper.Map<BakeryItem>(item);
+                    BakeryItem bakeryItem = new BakeryItem();
+                    bakeryItem.Title = item.ItemTitle; 
+                    bakeryItem.Description = item.ItemDescription;
+                    bakeryItem.Price = (int)item.Price;
+                    bakeryItem.MenuItemGuid = (Guid)item.MenuItemGuid;
                     response.BakeryItems.Add(bakeryItem);
                 }
                 return response;
