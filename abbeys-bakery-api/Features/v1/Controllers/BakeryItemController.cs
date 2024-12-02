@@ -22,5 +22,13 @@ namespace abbeys_bakery_api.Features.v1.Controllers
             var model = await _mediator.Send(request);
             return Ok(model);
         }
+
+        [Route("getSpecificBakeryItem")]
+        [HttpGet]
+        public async Task<ActionResult<GetSpecificBakeryItem.GetSpecificBakeryItemResponse>> GetSpecificbakeryItem(GetSpecificBakeryItem.GetSpecificBakeryItemRequest request)
+        {
+            var model = await _mediator.Send(request);
+            return Ok(model);
+        }
     }
 }

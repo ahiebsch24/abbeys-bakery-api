@@ -1,5 +1,6 @@
 ﻿using abbeys_bakery_api.Features.v1.Models.BakeryItem;
 using AutoMapper;
+using static abbeys_bakery_api.Features.v1.Models.BakeryItem.GetSpecificBakeryItem;
 
 namespace abbeys_bakery_api.Configuration
 {
@@ -7,6 +8,7 @@ namespace abbeys_bakery_api.Configuration
     {
         public AutoMapper() { 
             CreateMap<abbeys_bakery_api.Entities.MenuItem, GetAllBakeryItemsQuery.BakeryItem>();
+            CreateMap<abbeys_bakery_api.Entities.MenuItem, GetSpecificBakeryItemResponse>();
         }
 
     }

@@ -47,7 +47,7 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssemblyContaining<Program>();
 });
 
-var connectionString = builder.Configuration.GetConnectionString("AbbeysBakeryContext");
+var connectionString = builder.Configuration["AbbeysBakeryContext"];
 builder.Services.AddDbContext<AbbeysBakeryContext>(options =>
     options.UseSqlServer(connectionString));
 
