@@ -3,17 +3,15 @@
 using System;
 using System.Collections.Generic;
 
-namespace abbeys_bakery_api.Entities;
-
-public partial class MenuItem
+namespace abbeys_bakery_api.Entities
 {
-    public decimal? Price { get; set; }
-
-    public string ItemTitle { get; set; }
-
-    public string ItemDescription { get; set; }
-
-    public string AllergyNotes { get; set; }
-
-    public Guid? MenuItemGuid { get; set; }
+    public partial class MenuItem
+    {
+        public decimal? Price { get; set; }
+        public string ItemTitle { get; set; }
+        public string ItemDescription { get; set; }
+        public string AllergyNotes { get; set; }
+        public Guid MenuItemGuid { get; set; }
+        public string FileLocation { get; set; }
+    }
 }

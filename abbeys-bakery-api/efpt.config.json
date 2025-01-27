@@ -1,5 +1,5 @@
 ﻿{
-   "CodeGenerationMode": 3,
+   "CodeGenerationMode": 2,
    "ContextClassName": "AbbeysBakeryContext",
    "ContextNamespace": null,
    "FilterSchemas": false,
@@ -15,7 +15,15 @@
    "T4TemplatePath": null,
    "Tables": [
       {
+         "Name": "[dbo].[CartItems]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[MenuItems]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Users]",
          "ObjectType": 0
       }
    ],
