@@ -23,7 +23,7 @@ namespace abbeys_bakery_api.Features.v1.Models.Cart
             public async Task Handle(DeleteItemFromCartRequest request, CancellationToken cancellationToken)
             {
                 Guid CartItemId = new Guid(request.CartItemId);
-                CartItem CartItemForDeleting = this._abbeysBakeryContext.CartItems.Where(x => x.Equals(CartItemId)).FirstOrDefault();
+                CartItem CartItemForDeleting = this._abbeysBakeryContext.CartItems.Where(x => x.CartItemId == CartItemId).FirstOrDefault();
                 if(CartItemForDeleting != null)
                 {
                     this._abbeysBakeryContext.Remove(CartItemForDeleting);
