@@ -20,8 +20,9 @@ namespace abbeys_bakery_api.Features.v1.Models.Cart
         {
             public string ItemDescription { get; set;}
             public string Title { get; set;}
-            public decimal Price { get; set;}
-            public int Quantity { get; set;}
+            public decimal? Price { get; set;}
+            public int? Quantity { get; set;}
+            public Guid CartItemId { get; set;}
         }
 
         public class Handler : IRequestHandler<GetAllCartItemsForASpecificUserRequest, GetAllCartItemsForASpecificUserResponse>
@@ -39,11 +40,26 @@ namespace abbeys_bakery_api.Features.v1.Models.Cart
             {
                 Guid uniqueUserId = new Guid(request.UniqueUserId);
                 GetAllCartItemsForASpecificUserResponse response = new GetAllCartItemsForASpecificUserResponse();
-                var cartItems = this._abbeysBakeryContext.CartItems.Where(x => x.UniqueUserId == uniqueUserId).ToList();
-                foreach ( var cartItem in cartItems )
+                var cartItems = from cartItem in this._abbeysBakeryContext.CartItems
+                                join menuItem in this._abbeysBakeryContext.MenuItems
+                                on cartItem.MenuItemGuid equals menuItem.MenuItemGuid
+                                select new
+                                {
+                                    menuItem.ItemTitle,
+                                    menuItem.ItemDescription,
+                                    menuItem.Price,
+                                    cartItem.Quantity,
+                                    cartItem.CartItemId
+                                };
+                foreach ( var item in cartItems )
                 {
-                    UserCartItem item = this._mapper.Map<UserCartItem>(cartItem);
-                    response.Items.Add(item);
+                    UserCartItem cartItem = new UserCartItem();
+                    cartItem.Title = item.ItemTitle;
+                    cartItem.Quantity = item.Quantity;
+                    cartItem.ItemDescription = item.ItemDescription;
+                    cartItem.Price = item.Price;
+                    cartItem.CartItemId = item.CartItemId;
+                    response.Items.Add( cartItem );
                 }
                 return response;
             }
