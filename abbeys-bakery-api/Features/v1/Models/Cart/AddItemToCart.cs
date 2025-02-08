@@ -30,12 +30,22 @@ namespace abbeys_bakery_api.Features.v1.Models.Cart
             {
                 Guid UserId = new Guid(request.UserId);
                 Guid MenuItemGuid = new Guid(request.MenuItemGuid);
-                CartItem cartItem = new CartItem();
-                cartItem.MenuItemGuid = MenuItemGuid;
-                cartItem.UniqueUserId = UserId;
-                cartItem.Quantity = request.Quantity;
-                this._abbeysBakeryContext.Add(cartItem);
-                this._abbeysBakeryContext.SaveChanges();
+                // Make sure that if the user already has the item you just increase the quantithy
+                var userAlreadyHasItem = this._abbeysBakeryContext.CartItems.Where(x => x.MenuItemGuid == MenuItemGuid).FirstOrDefault();
+                if(userAlreadyHasItem != null)
+                {
+                    userAlreadyHasItem.Quantity = request.Quantity + userAlreadyHasItem.Quantity;
+                    this._abbeysBakeryContext.SaveChanges();
+                }
+                else
+                {
+                    CartItem cartItem = new CartItem();
+                    cartItem.MenuItemGuid = MenuItemGuid;
+                    cartItem.UniqueUserId = UserId;
+                    cartItem.Quantity = request.Quantity;
+                    this._abbeysBakeryContext.Add(cartItem);
+                    this._abbeysBakeryContext.SaveChanges();
+                }
             }
         }
     }
