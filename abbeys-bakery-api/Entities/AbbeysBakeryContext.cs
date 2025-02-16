@@ -20,6 +20,8 @@ namespace abbeys_bakery_api.Entities
 
         public virtual DbSet<CartItem> CartItems { get; set; }
         public virtual DbSet<MenuItem> MenuItems { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<OrderItem> OrderItems { get; set; }
         public virtual DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -55,6 +57,18 @@ namespace abbeys_bakery_api.Entities
                 entity.Property(e => e.Price).HasColumnType("decimal(18, 0)");
             });
 
+            modelBuilder.Entity<Order>(entity =>
+            {
+                entity.Property(e => e.OrderId).HasDefaultValueSql("(newid())");
+            });
+
+            modelBuilder.Entity<OrderItem>(entity =>
+            {
+                entity.ToTable("OrderItem");
+
+                entity.Property(e => e.OrderItemId).HasDefaultValueSql("(newid())");
+            });
+
             modelBuilder.Entity<User>(entity =>
             {
                 entity.Property(e => e.UserId).HasDefaultValueSql("(newid())");
@@ -78,6 +92,7 @@ namespace abbeys_bakery_api.Entities
                     .IsUnicode(false);
             });
 
+            OnModelCreatingGeneratedProcedures(modelBuilder);
             OnModelCreatingPartial(modelBuilder);
         }
 
