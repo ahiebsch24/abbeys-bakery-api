@@ -13,7 +13,7 @@ namespace abbeys_bakery_api.Entities
 {
     public partial interface IAbbeysBakeryContextProcedures
     {
-        Task<int> CreateOrderAsync(Guid? UniquUserId, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
+        Task<int> CreateOrderAsync(Guid? UniquUserId, Guid? UserTableId, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
         Task<List<GetOrderDetailsResult>> GetOrderDetailsAsync(Guid? UniqueUserId, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
     }
 }

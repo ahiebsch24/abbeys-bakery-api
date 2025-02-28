@@ -13,5 +13,6 @@ namespace abbeys_bakery_api.Entities
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public Guid AddressId { get; set; }
+        public Guid? UniqueUserId { get; set; }
     }
 }

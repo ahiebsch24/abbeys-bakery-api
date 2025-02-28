@@ -7,7 +7,8 @@ namespace abbeys_bakery_api.Features.v1.Models.Order
     {
         public class CreateOrderItemRequest : IRequest
         {
-            public Guid UniqueUserIdentifier { get; set; }
+            public string UniqueUserIdentifier { get; set; }
+            public string UserId { get; set; }
         }
 
 
@@ -22,7 +23,7 @@ namespace abbeys_bakery_api.Features.v1.Models.Order
 
             public async Task Handle(CreateOrderItemRequest request, CancellationToken cancellationToken)
             {
-                await this._abbeysBakeryContext.Procedures.CreateOrderAsync(request.UniqueUserIdentifier);
+                await this._abbeysBakeryContext.Procedures.CreateOrderAsync(new Guid(request.UniqueUserIdentifier), new Guid(request.UserId));
                 this._abbeysBakeryContext.SaveChanges();
             }
         }

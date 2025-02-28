@@ -18,6 +18,7 @@ namespace abbeys_bakery_api.Entities
         {
         }
 
+        public virtual DbSet<Address> Addresses { get; set; }
         public virtual DbSet<CartItem> CartItems { get; set; }
         public virtual DbSet<MenuItem> MenuItems { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
@@ -26,6 +27,31 @@ namespace abbeys_bakery_api.Entities
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Address>(entity =>
+            {
+                entity.Property(e => e.AddressId).HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.City)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.State)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.StreetAddress1)
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.StreetAddress2)
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ZipCode)
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+            });
+
             modelBuilder.Entity<CartItem>(entity =>
             {
                 entity.Property(e => e.CartItemId).HasDefaultValueSql("(newid())");

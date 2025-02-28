@@ -48,7 +48,7 @@ namespace abbeys_bakery_api.Entities
             _context = context;
         }
 
-        public virtual async Task<int> CreateOrderAsync(Guid? UniquUserId, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public virtual async Task<int> CreateOrderAsync(Guid? UniquUserId, Guid? UserTableId, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
             {
@@ -65,9 +65,15 @@ namespace abbeys_bakery_api.Entities
                     Value = UniquUserId ?? Convert.DBNull,
                     SqlDbType = System.Data.SqlDbType.UniqueIdentifier,
                 },
+                new SqlParameter
+                {
+                    ParameterName = "UserTableId",
+                    Value = UserTableId ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.UniqueIdentifier,
+                },
                 parameterreturnValue,
             };
-            var _ = await _context.Database.ExecuteSqlRawAsync("EXEC @returnValue = [dbo].[CreateOrder] @UniquUserId = @UniquUserId", sqlParameters, cancellationToken);
+            var _ = await _context.Database.ExecuteSqlRawAsync("EXEC @returnValue = [dbo].[CreateOrder] @UniquUserId = @UniquUserId, @UserTableId = @UserTableId", sqlParameters, cancellationToken);
 
             returnValue?.SetValue(parameterreturnValue.Value);
 

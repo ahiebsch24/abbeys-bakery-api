@@ -10,5 +10,6 @@ namespace abbeys_bakery_api.Entities
         public Guid OrderItemId { get; set; }
         public Guid OrderId { get; set; }
         public Guid MenuId { get; set; }
+        public int? Quantity { get; set; }
     }
 }
